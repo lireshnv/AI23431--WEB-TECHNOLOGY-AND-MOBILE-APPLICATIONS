@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Online Hostel Management System</title>
+</head>
+
+<body>
+
+<center>
+    <h1>🏨 Online Hostel Management System</h1>
+    <p>Room Allocation | Student Records | Hostel Facilities</p>
+</center>
+
+<hr>
+
+<!-- Navigation -->
+<center>
+    <a href="#registration">Student Registration</a> |
+    <a href="#rooms">Room Allocation</a> |
+    <a href="#fees">Fee Status</a> |
+    <a href="#map">Hostel Map</a>
+</center>
+
+<hr>
+
+<!-- Student Registration -->
+<a name="registration"></a>
+<fieldset>
+    <legend><b>📝 Student Registration</b></legend>
+
+    <form>
+        <table>
+            <tr>
+                <td>Student Name:</td>
+                <td><input type="text" placeholder="Enter Name"></td>
+            </tr>
+            <tr>
+                <td>Register Number:</td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td>Gender:</td>
+                <td>
+                    <input type="radio" name="g"> Male
+                    <input type="radio" name="g"> Female
+                </td>
+            </tr>
+            <tr>
+                <td>Hostel Type:</td>
+                <td>
+                    <select>
+                        <option>Boys Hostel</option>
+                        <option>Girls Hostel</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Room Type:</td>
+                <td>
+                    <select>
+                        <option>Single</option>
+                        <option>Double</option>
+                        <option>Triple</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" value="Register Student">
+                </td>
+            </tr>
+        </table>
+    </form>
+</fieldset>
+
+<hr>
+
+<!-- Room Allocation -->
+<a name="rooms"></a>
+<fieldset>
+    <legend><b>🏠 Room Allocation</b></legend>
+
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Room No</th>
+            <th>Block</th>
+            <th>Type</th>
+            <th>Status</th>
+        </tr>
+        <tr>
+            <td>101</td>
+            <td>A</td>
+            <td>Double</td>
+            <td>Available</td>
+        </tr>
+        <tr>
+            <td>202</td>
+            <td>B</td>
+            <td>Triple</td>
+            <td>Occupied</td>
+        </tr>
+    </table>
+
+    <p>Occupancy Status:</p>
+    <progress value="65" max="100"></progress>
+</fieldset>
+
+<hr>
+
+<!-- Fee Status -->
+<a name="fees"></a>
+<fieldset>
+    <legend><b>💰 Fee Management</b></legend>
+
+    <form>
+        Enter Register Number:
+        <input type="text">
+        <input type="submit" value="Check Fee Status">
+    </form>
+
+    <details>
+        <summary>Fee Details</summary>
+        <ul>
+            <li>Hostel Fee: ₹45,000</li>
+            <li>Mess Fee: ₹25,000</li>
+            <li>Maintenance Fee: ₹5,000</li>
+        </ul>
+    </details>
+</fieldset>
+
+<hr>
+
+<!-- Hostel Map -->
+<a name="map"></a>
+<fieldset>
+    <legend><b>🗺 Hostel Layout Map</b></legend>
+
+    <p>Click blocks to view details</p>
+
+    <img src="https://via.placeholder.com/500x250" usemap="#hostelmap">
+
+    <map name="hostelmap">
+        <area shape="rect" coords="0,0,160,250" href="#blocka" alt="Block A">
+        <area shape="rect" coords="170,0,330,250" href="#blockb" alt="Block B">
+        <area shape="rect" coords="340,0,500,250" href="#blockc" alt="Block C">
+    </map>
+
+    <h4 id="blocka">🏢 Block A</h4>
+    <p>Boys Hostel – First Year Students</p>
+
+    <h4 id="blockb">🏢 Block B</h4>
+    <p>Girls Hostel – Second Year Students</p>
+
+    <h4 id="blockc">🏢 Block C</h4>
+    <p>Mess and Common Facilities</p>
+</fieldset>
+
+<hr>
+
+<!-- Information Frame -->
+<fieldset>
+    <legend><b>ℹ Hostel Guidelines</b></legend>
+
+    <iframe
+        srcdoc="
+        <html>
+        <body>
+            <h3>Hostel Rules</h3>
+            <ul>
+                <li>Entry closes at 10 PM</li>
+                <li>Visitors allowed until 6 PM</li>
+                <li>Maintain cleanliness</li>
+                <li>No ragging policy</li>
+            </ul>
+        </body>
+        </html>"
+        width="100%" height="180">
+    </iframe>
+</fieldset>
+
+<hr>
+
+<center>
+    <p>© 2026 Online Hostel Management System</p>
+</center>
+
+</body>
+</html>
