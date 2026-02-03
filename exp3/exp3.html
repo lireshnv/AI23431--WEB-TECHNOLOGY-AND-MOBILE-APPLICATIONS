@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Online Hostel Management System</title>
+    <style>
+        /* --- GLOBAL STYLES --- */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            min-height: 100vh;
+        }
+
+        /* --- DASHBOARD STYLES (From your original code) --- */
+        header {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #2563eb;
+            text-align: center;
+            padding: 12px;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 15px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            padding: 20px 40px;
+        }
+
+        fieldset {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            border: 1px solid #cbd5e1;
+        }
+
+        legend {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e40af;
+            padding: 0 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        td, th {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #cbd5e1;
+        }
+
+        th {
+            background-color: #e0e7ff;
+        }
+
+        /* --- INPUTS & BUTTONS --- */
+        input[type="text"], input[type="password"], input[type="email"], select {
+            width: 95%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #cbd5e1;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"], button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #2563eb;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        input[type="submit"]:hover, button:hover {
+            background-color: #1e40af;
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        progress {
+            width: 100%;
+            height: 20px;
+        }
+
+        iframe {
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+        }
+
+        footer {
+            background-color: #1e3a8a;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+        }
+
+        /* --- AUTH PAGES SPECIFIC STYLES (Login/Signup) --- */
+        .auth-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .auth-box {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .auth-box h2 {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+        }
+
+        .auth-box input[type="text"], 
+        .auth-box input[type="password"], 
+        .auth-box input[type="email"] {
+            width: 100%;
+            box-sizing: border-box; /* Fixes padding issues */
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+
+        .auth-box input[type="submit"] {
+            width: 100%;
+            font-size: 16px;
+            padding: 12px;
+        }
+
+        .toggle-link {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .toggle-link a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Utility Class to Hide Sections */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+
+    <script>
+        // --- NAVIGATION LOGIC ---
+        function showPage(pageId) {
+            // Hide all pages
+            document.getElementById('login-page').classList.add('hidden');
+            document.getElementById('signup-page').classList.add('hidden');
+            document.getElementById('dashboard-page').classList.add('hidden');
+
+            // Show selected page
+            document.getElementById(pageId).classList.remove('hidden');
+        }
+
+        // --- AUTH LOGIC ---
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById("login-email").value;
+            const pass = document.getElementById("login-pass").value;
+
+            if (email && pass) {
+                // Simulate successful login
+                showPage('dashboard-page');
+            } else {
+                alert("Please enter email and password.");
+            }
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+            const email = document.getElementById("signup-email").value;
+            const pass = document.getElementById("signup-pass").value;
+            const passConf = document.getElementById("signup-pass-conf").value;
+
+            // Simple validation
+            let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+            
+            if (!emailRegex.test(email)) {
+                alert("Invalid email format.");
+                return;
+            }
+            if (pass.length < 6) {
+                alert("Password must be at least 6 characters.");
+                return;
+            }
+            if (pass !== passConf) {
+                alert("Passwords do not match.");
+                return;
+            }
+
+            alert("Registration Successful! Please Login.");
+            showPage('login-page');
+        }
+
+        function handleLogout() {
+            if(confirm("Are you sure you want to logout?")) {
+                document.getElementById("login-form").reset(); // Clear login form
+                showPage('login-page');
+            }
+        }
+
+        // --- DASHBOARD VALIDATION (From your original code) ---
+        function validateDashboardForm(event) {
+            event.preventDefault(); 
+            let fname = document.getElementById("fname").value.trim();
+            let password = document.getElementById("reg-password").value;
+            let mobile = document.getElementById("mobile").value.trim();
+
+            if (fname.length < 3) { alert("First Name too short."); return false; }
+            if (password.length < 6) { alert("Password too short."); return false; }
+            if (!/^[0-9]{10}$/.test(mobile)) { alert("Invalid Mobile."); return false; }
+
+            alert("Student Registered Successfully!");
+            return true;
+        }
+    </script>
+</head>
+
+<body>
+
+    <div id="login-page" class="auth-wrapper">
+        <div class="auth-box">
+            <h2>🏨 HMS Login</h2>
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <input type="email" id="login-email" placeholder="Email Address" required>
+                <input type="password" id="login-pass" placeholder="Password" required>
+                <input type="submit" value="Login">
+            </form>
+            <div class="toggle-link">
+                Don't have an account? <a href="#" onclick="showPage('signup-page')">Sign Up</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="signup-page" class="auth-wrapper hidden">
+        <div class="auth-box">
+            <h2>📝 Create Account</h2>
+            <form onsubmit="handleSignup(event)">
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" id="signup-email" placeholder="Email Address" required>
+                <input type="password" id="signup-pass" placeholder="Password (Min 6 chars)" required>
+                <input type="password" id="signup-pass-conf" placeholder="Confirm Password" required>
+                <input type="submit" value="Sign Up">
+            </form>
+            <div class="toggle-link">
+                Already have an account? <a href="#" onclick="showPage('login-page')">Login</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="dashboard-page" class="hidden">
+        
+        <header>
+            <h1>🏨 Online Hostel Management System</h1>
+            <p>Smart & Secure Hostel Administration</p>
+        </header>
+
+        <nav>
+            <a href="#registration">Student Registration</a>
+            <a href="#rooms">Room Allocation</a>
+            <a href="#fees">Fee Status</a>
+            <a href="#map">Hostel Map</a>
+            <a href="#guidelines">Guidelines</a>
+            <a href="#" onclick="handleLogout()" style="color: #ffcccb;">Logout ➜</a>
+        </nav>
+
+        <div class="container">
+
+            <a name="registration"></a>
+            <fieldset>
+                <legend>📝 Student Registration</legend>
+                <form onsubmit="return validateDashboardForm(event);">
+                    <table>
+                        <tr>
+                            <td>First Name:</td>
+                            <td><input type="text" id="fname" placeholder="Enter First Name"></td>
+                        </tr>
+                        <tr>
+                            <td>Last Name:</td>
+                            <td><input type="text" id="lname" placeholder="Enter Last Name"></td>
+                        </tr>
+                        <tr>
+                            <td>Password:</td>
+                            <td><input type="password" id="reg-password" placeholder="Enter Password"></td>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td><input type="email" id="reg-email" placeholder="Enter Email"></td>
+                        </tr>
+                        <tr>
+                            <td>Mobile Number:</td>
+                            <td><input type="text" id="mobile" placeholder="Enter 10-digit Mobile Number"></td>
+                        </tr>
+                        <tr>
+                            <td>Address:</td>
+                            <td><input type="text" id="address" placeholder="Enter Address"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">
+                                <input type="submit" value="Register Student">
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </fieldset>
+
+            <a name="rooms"></a>
+            <fieldset>
+                <legend>🏠 Room Allocation</legend>
+                <table>
+                    <tr>
+                        <th>Room No</th>
+                        <th>Block</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr>
+                        <td>101</td>
+                        <td>A</td>
+                        <td>Double</td>
+                        <td>Available</td>
+                    </tr>
+                    <tr>
+                        <td>202</td>
+                        <td>B</td>
+                        <td>Triple</td>
+                        <td>Occupied</td>
+                    </tr>
+                </table>
+                <p>Occupancy Status:</p>
+                <progress value="65" max="100"></progress>
+            </fieldset>
+
+            <a name="fees"></a>
+            <fieldset>
+                <legend>💰 Fee Management</legend>
+                <form>
+                    Enter Register Number:
+                    <input type="text" style="width: auto;">
+                    <input type="submit" value="Check Fee Status">
+                </form>
+                <details>
+                    <summary>Fee Details</summary>
+                    <ul>
+                        <li>Hostel Fee: ₹45,000</li>
+                        <li>Mess Fee: ₹25,000</li>
+                        <li>Maintenance Fee: ₹5,000</li>
+                    </ul>
+                </details>
+            </fieldset>
+
+            <a name="map"></a>
+            <fieldset>
+                <legend>🗺 Hostel Layout Map</legend>
+                <p>Click blocks to view details</p>
+                <img src="https://images.unsplash.com/photo-1597262975002-c5c3b14bbd62?fit=crop&w=500&h=250" usemap="#hostelmap">
+                <map name="hostelmap">
+                    <area shape="rect" coords="0,0,160,250" href="#blocka" alt="Block A">
+                    <area shape="rect" coords="170,0,330,250" href="#blockb" alt="Block B">
+                    <area shape="rect" coords="340,0,500,250" href="#blockc" alt="Block C">
+                </map>
+                <h4 id="blocka">🏢 Block A</h4>
+                <p>Boys Hostel – First Year Students</p>
+                <h4 id="blockb">🏢 Block B</h4>
+                <p>Girls Hostel – Second Year Students</p>
+                <h4 id="blockc">🏢 Block C</h4>
+                <p>Mess and Common Facilities</p>
+            </fieldset>
+
+            <a name="guidelines"></a>
+            <fieldset>
+                <legend>ℹ Hostel Guidelines</legend>
+                <iframe
+                    srcdoc="
+                    <html>
+                    <body>
+                        <h3>Hostel Rules</h3>
+                        <ul>
+                            <li>Entry closes at 10 PM</li>
+                            <li>Visitors allowed until 6 PM</li>
+                            <li>Maintain cleanliness</li>
+                            <li>No ragging policy</li>
+                        </ul>
+                    </body>
+                    </html>"
+                    width="100%" height="180">
+                </iframe>
+            </fieldset>
+
+        </div>
+
+        <footer>
+            <p>© 2026 Online Hostel Management System</p>
+        </footer>
+    </div>
+
+</body>
+</html>
